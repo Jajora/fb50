@@ -1,0 +1,79 @@
+<div id="fb50" class="module-section">
+            <div class="module-header" onclick="toggleSection(this)">
+                <h3><i class="fa fa-file-invoice-dollar"></i> قيد اليومية العام في الحسابات العامة <span class="tcode-badge">FB50</span></h3>
+                <i class="fa fa-chevron-down"></i>
+            </div>
+            <div class="module-content">
+                <p><strong>الغرض العملي (Business Scenario):</strong> تُستخدم هذه المعاملة لتسجيل قيود اليومية اليدوية المباشرة في حسابات الأستاذ العام (G/L Accounts)، مثل تسويات نهاية الشهر، إثبات المصروفات المستحقة، أو الإيرادات المقدمة، وتتميز بوجود شاشة واحدة لإدخال جانب المدين والدائن معاً (Single Screen Transaction).</p>
+                
+                <h4 style="margin: 15px 0 5px; color: var(--sap-dark-blue);">البيانات الأساسية في ترويسة القيد (Header Data):</h4>
+                <ul>
+                    <li><strong>Document Date:</strong> تاريخ الفاتورة أو المستند الأصلي.</li>
+                    <li><strong>Posting Date:</strong> التاريخ الفعلي لترحيل الأثر المالي في الدفاتر والسنة المالية.</li>
+                    <li><strong>Doc.Type:</strong> نوع المستند القياسي للقيود العامة وعادة ما يكون (SA).</li>
+                    <li><strong>Currency:</strong> عملة القيد الأساسية (مثل EGP / SAR).</li>
+                </ul>
+
+                <div class="sap-screen">
+                    <div class="sap-screen-header">
+                        <span>Enter G/L Account Document: Company Code 1000</span>
+                        <span>SAP GUI / S4HANA</span>
+                    </div>
+                    <div class="sap-screen-toolbar">
+                        <span><i class="fa fa-save"></i> Post (F5)</span> | <span><i class="fa fa-check-circle"></i> Simulate</span> | <span>Tree On/Off</span>
+                    </div>
+                    <div class="sap-screen-body">
+                        <div class="sap-row">
+                            <div class="sap-label">Document Date:</div>
+                            <input type="text" class="sap-input required" value="21.05.2026">
+                        </div>
+                        <div class="sap-row">
+                            <div class="sap-label">Posting Date:</div>
+                            <input type="text" class="sap-input required" value="21.05.2026">
+                        </div>
+                        <div class="sap-row">
+                            <div class="sap-label">Reference:</div>
+                            <input type="text" class="sap-input" value="Adj-May2026">
+                        </div>
+                    </div>
+                </div>
+
+                <h4 style="margin: 15px 0 10px; color: var(--sap-dark-blue);">مثال واقعي لقيد تسوية مصروفات (Accounting Entry):</h4>
+                <div class="entry-box">
+                    <div class="entry-row header">
+                        <span>الحساب (G/L Account)</span>
+                        <span>الاتجاه (Debit/Credit)</span>
+                        <span>المبلغ (Amount)</span>
+                        <span>مركز التكلفة (Cost Center)</span>
+                    </div>
+                    <div class="entry-row">
+                        <span>حـ/ مصروفات صيانة عامة (G/L 400120)</span>
+                        <span>مدين (Debit)</span>
+                        <span>15,000</span>
+                        <span>CC_ADMIN</span>
+                    </div>
+                    <div class="entry-row">
+                        <span>حـ/ النقدية بالبنك (G/L 110010)</span>
+                        <span>دائن (Credit)</span>
+                        <span>15,000</span>
+                        <span>-</span>
+                    </div>
+                </div>
+
+                <div class="info-block block-tip">
+                    <i class="fa fa-lightbulb"></i>
+                    <div>
+                        <strong>ميزة ذكية في ساب:</strong> نظام SAP لن يسمح بترحيل القيد (Post) أبداً إلا إذا كانت إشارة لمبة التوازن في أعلى الشاشة باللون <strong>الأخضر</strong>، مما يعني أن مجموع الجانب المدين يساوي تماماً مجموع الجانب الدائن Balance = 0.
+                    </div>
+                </div>
+
+                <div class="info-block block-error">
+                    <i class="fa fa-exclamation-triangle"></i>
+                    <div>
+                        <strong>خطأ شائع:</strong> <code>G/L account XXXXXX requires an assignment to a CO object</code><br>
+                        <strong>الحل:</strong> حساب المصروفات المختار مرتبط بحسابات التكاليف، لذا يجب إدخال مركز تكلفة (Cost Center) أو أمر داخلي (Internal Order) في سطر الحساب لتمرير القيد بنجاح.
+                    </div>
+                </div>
+                <button class="btn-ctrl" style="margin-top: 15px; background-color: var(--sap-blue); color: white;" onclick="markAsCompleted('fb50')">اعلم كـ مقروء ومكتمل ✓</button>
+            </div>
+        </div>

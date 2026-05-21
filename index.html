@@ -1,79 +1,1070 @@
-<div id="fb50" class="module-section">
-            <div class="module-header" onclick="toggleSection(this)">
-                <h3><i class="fa fa-file-invoice-dollar"></i> قيد اليومية العام في الحسابات العامة <span class="tcode-badge">FB50</span></h3>
-                <i class="fa fa-chevron-down"></i>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAP FB50 Interactive Training Portal</title>
+    <style>
+        :root {
+            --sap-blue: #0a6ed1;
+            --sap-dark-blue: #003264;
+            --sap-light-blue: #f0f7ff;
+            --sap-grey-bg: #f5f7fa;
+            --sap-border: #d9d9d9;
+            --sap-text: #333333;
+            --sap-light-text: #666666;
+            --sap-success: #2b7d2b;
+            --sap-warning: #df6e00;
+            --sap-error: #bb0000;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--sap-grey-bg);
+            color: var(--sap-text);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Design */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--sap-dark-blue);
+            color: white;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            background-color: rgba(0,0,0,0.2);
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        .sidebar-header p {
+            font-size: 0.8rem;
+            color: #a0c5ed;
+        }
+
+        .search-box {
+            padding: 15px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: none;
+            background-color: rgba(255,255,255,0.15);
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .search-box input::placeholder {
+            color: #cccccc;
+        }
+
+        .nav-menu {
+            list-style: none;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .nav-item a {
+            display: block;
+            padding: 12px 20px;
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s;
+        }
+
+        .nav-item a:hover, .nav-item.active a {
+            background-color: var(--sap-blue);
+            color: white;
+            padding-right: 25px;
+        }
+
+        /* Main Content Design */
+        .main-container {
+            margin-right: var(--sidebar-width);
+            flex-grow: 1;
+            padding: 40px;
+            background-color: #ffffff;
+            min-height: 100vh;
+        }
+
+        .header-banner {
+            background: linear-gradient(135deg, var(--sap-dark-blue), var(--sap-blue));
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .btn-print {
+            background-color: white;
+            color: var(--sap-dark-blue);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-print:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Content Sections */
+        section {
+            margin-bottom: 60px;
+            scroll-margin-top: 40px;
+            border-bottom: 2px solid var(--sap-grey-bg);
+            padding-bottom: 40px;
+        }
+
+        h2.section-title {
+            color: var(--sap-dark-blue);
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            border-right: 5px solid var(--sap-blue);
+            padding-right: 15px;
+        }
+
+        p {
+            line-height: 1.8;
+            color: var(--sap-text);
+            margin-bottom: 15px;
+        }
+
+        /* Notes and Banners Styles */
+        .sap-note {
+            background-color: var(--sap-light-blue);
+            border-right: 4px solid var(--sap-blue);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .sap-note-title {
+            font-weight: bold;
+            color: var(--sap-dark-blue);
+            margin-bottom: 5px;
+        }
+
+        .warning-box {
+            background-color: #fff3e6;
+            border-right: 4px solid var(--sap-warning);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* Tables style */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            border: 1px solid var(--sap-border);
+            padding: 12px 15px;
+            text-align: right;
+        }
+
+        th {
+            background-color: var(--sap-dark-blue);
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: var(--sap-grey-bg);
+        }
+
+        /* SAP GUI Mockup Screen */
+        .sap-gui-mockup {
+            border: 2px solid #888888;
+            border-radius: 6px;
+            background-color: #f0f0f0;
+            margin: 25px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .sap-gui-header {
+            background-color: #444444;
+            color: white;
+            padding: 8px 15px;
+            font-family: monospace;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+        }
+
+        .sap-gui-toolbar {
+            background-color: #e1e4e6;
+            padding: 6px 15px;
+            border-bottom: 1px solid var(--sap-border);
+            display: flex;
+            gap: 10px;
+        }
+
+        .sap-gui-btn {
+            background-color: #ffffff;
+            border: 1px solid #ababab;
+            padding: 3px 10px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            border-radius: 2px;
+        }
+
+        .sap-gui-btn:hover {
+            background-color: #e5f1fb;
+            border-color: var(--sap-blue);
+        }
+
+        .sap-gui-content {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .sap-gui-form-group {
+            background-color: white;
+            border: 1px solid var(--sap-border);
+            padding: 15px;
+            border-radius: 4px;
+        }
+
+        .sap-gui-form-group h4 {
+            color: var(--sap-dark-blue);
+            margin-bottom: 15px;
+            border-bottom: 1px dashed var(--sap-border);
+            padding-bottom: 5px;
+            font-size: 0.95rem;
+        }
+
+        .sap-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .sap-field {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .sap-field label {
+            width: 140px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .sap-field input, .sap-field select {
+            flex-grow: 1;
+            padding: 5px;
+            border: 1px solid var(--sap-border);
+            border-radius: 3px;
+            font-size: 0.85rem;
+            background-color: #fffffe;
+        }
+
+        .sap-field input[required] {
+            border-right: 3px solid var(--sap-error);
+        }
+
+        .sap-gui-table-wrapper {
+            overflow-x: auto;
+            background-color: white;
+            border: 1px solid var(--sap-border);
+        }
+
+        .sap-gui-table {
+            width: 100%;
+            margin: 0;
+        }
+
+        .sap-gui-table th {
+            background-color: #ececec;
+            color: #333333;
+            font-size: 0.8rem;
+            padding: 6px;
+            border: 1px solid var(--sap-border);
+        }
+
+        .sap-gui-table td {
+            padding: 4px;
+            border: 1px solid var(--sap-border);
+        }
+
+        .sap-gui-table input {
+            width: 100%;
+            padding: 4px;
+            border: 1px solid transparent;
+            font-size: 0.85rem;
+        }
+
+        .sap-gui-table input:focus {
+            border-color: var(--sap-blue);
+            background-color: #fff;
+        }
+
+        /* Interactive Accordion for Errors */
+        .accordion-item {
+            border: 1px solid var(--sap-border);
+            border-radius: 4px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            background-color: var(--sap-grey-bg);
+            padding: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        .accordion-header:hover {
+            background-color: var(--sap-light-blue);
+        }
+
+        .accordion-content {
+            padding: 20px;
+            display: none;
+            background-color: white;
+            border-top: 1px solid var(--sap-border);
+        }
+
+        /* Tabs System */
+        .tabs-container {
+            margin: 20px 0;
+        }
+
+        .tabs-headers {
+            display: flex;
+            border-bottom: 2px solid var(--sap-blue);
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            background-color: var(--sap-grey-bg);
+            border: 1px solid var(--sap-border);
+            border-bottom: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .tab-button.active {
+            background-color: var(--sap-blue);
+            color: white;
+            border-color: var(--sap-blue);
+        }
+
+        .tab-content {
+            padding: 20px;
+            border: 1px solid var(--sap-border);
+            border-top: none;
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Workflow Flowcharts */
+        .workflow-flex {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 30px 0;
+            background-color: var(--sap-light-blue);
+            padding: 20px;
+            border-radius: 6px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .workflow-step {
+            background-color: white;
+            border: 2px solid var(--sap-blue);
+            padding: 12px 20px;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: bold;
+            min-width: 150px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .workflow-arrow {
+            font-size: 1.5rem;
+            color: var(--sap-dark-blue);
+            font-weight: bold;
+        }
+
+        /* Quick Access Cards */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .dashboard-card {
+            background-color: white;
+            border: 1px solid var(--sap-border);
+            border-top: 4px solid var(--sap-blue);
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .dashboard-card h3 {
+            color: var(--sap-dark-blue);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .dashboard-card p {
+            font-size: 0.85rem;
+            color: var(--sap-light-text);
+            margin: 0;
+        }
+
+        /* Highlight classes */
+        .badge-error {
+            background-color: var(--sap-error);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.8rem;
+        }
+
+        .badge-success {
+            background-color: var(--sap-success);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.8rem;
+        }
+
+        /* Print Optimization CSS */
+        @media print {
+            .sidebar, .btn-print, .sap-gui-toolbar, .tabs-headers {
+                display: none !important;
+            }
+            .main-container {
+                margin-right: 0 !important;
+                padding: 0 !important;
+            }
+            .accordion-content, .tab-content {
+                display: block !important;
+            }
+            section {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- STICKY SIDEBAR NAVIGATION -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>SAP FICO Portal</h2>
+            <p>دليل التدريب التفاعلي الشامل</p>
+        </div>
+        <div class="search-box">
+            <input type="text" id="menuSearch" onkeyup="filterMenu()" placeholder="بحث في الفصول والأخطاء...">
+        </div>
+        <ul class="nav-menu" id="navMenu">
+            <li class="nav-item active"><a href="#intro">مقدمة وبنية T-Code</a></li>
+            <li class="nav-item"><a href="#screens">1. الدخول وشاشات العرض</a></li>
+            <li class="nav-item"><a href="#fields">2. دليل الحقول التفصيلي</a></li>
+            <li class="nav-item"><a href="#scenario">3. سيناريو عملي كامل</a></li>
+            <li class="nav-item"><a href="#simulation">4. محاكاة النظام الفعلي</a></li>
+            <li class="nav-item"><a href="#errors">5. الأخطاء الشائعة وحلولها</a></li>
+            <li class="nav-item"><a href="#post-view">6. عرض المستند والتعديل</a></li>
+            <li class="nav-item"><a href="#reverse">7. عكس القيود اليومية</a></li>
+            <li class="nav-item"><a href="#expert-cases">8. حالات محاسبية متقدمة</a></li>
+            <li class="nav-item"><a href="#best-practices">9. الممارسات الأمثل والرقابة</a></li>
+            <li class="nav-item"><a href="#comparison">10. جدول المقارنة الشامل</a></li>
+        </ul>
+    </div>
+
+    <!-- MAIN CONTEXT CONTAINER -->
+    <div class="main-container">
+        
+        <!-- HEADER BANNER -->
+        <div class="header-banner">
+            <div class="header-title">
+                <h1>معالجة القيود اليومية العامة في SAP</h1>
+                <p>دليل معتمد لتأهيل الكوادر المالية والمحاسبية | كود المعاملة الموحد: <strong>FB50</strong></p>
             </div>
-            <div class="module-content">
-                <p><strong>الغرض العملي (Business Scenario):</strong> تُستخدم هذه المعاملة لتسجيل قيود اليومية اليدوية المباشرة في حسابات الأستاذ العام (G/L Accounts)، مثل تسويات نهاية الشهر، إثبات المصروفات المستحقة، أو الإيرادات المقدمة، وتتميز بوجود شاشة واحدة لإدخال جانب المدين والدائن معاً (Single Screen Transaction).</p>
-                
-                <h4 style="margin: 15px 0 5px; color: var(--sap-dark-blue);">البيانات الأساسية في ترويسة القيد (Header Data):</h4>
-                <ul>
-                    <li><strong>Document Date:</strong> تاريخ الفاتورة أو المستند الأصلي.</li>
-                    <li><strong>Posting Date:</strong> التاريخ الفعلي لترحيل الأثر المالي في الدفاتر والسنة المالية.</li>
-                    <li><strong>Doc.Type:</strong> نوع المستند القياسي للقيود العامة وعادة ما يكون (SA).</li>
-                    <li><strong>Currency:</strong> عملة القيد الأساسية (مثل EGP / SAR).</li>
-                </ul>
+            <button class="btn-print" onclick="window.print()">تصدير كملف PDF / طباعة</button>
+        </div>
 
-                <div class="sap-screen">
-                    <div class="sap-screen-header">
-                        <span>Enter G/L Account Document: Company Code 1000</span>
-                        <span>SAP GUI / S4HANA</span>
-                    </div>
-                    <div class="sap-screen-toolbar">
-                        <span><i class="fa fa-save"></i> Post (F5)</span> | <span><i class="fa fa-check-circle"></i> Simulate</span> | <span>Tree On/Off</span>
-                    </div>
-                    <div class="sap-screen-body">
-                        <div class="sap-row">
-                            <div class="sap-label">Document Date:</div>
-                            <input type="text" class="sap-input required" value="21.05.2026">
-                        </div>
-                        <div class="sap-row">
-                            <div class="sap-label">Posting Date:</div>
-                            <input type="text" class="sap-input required" value="21.05.2026">
-                        </div>
-                        <div class="sap-row">
-                            <div class="sap-label">Reference:</div>
-                            <input type="text" class="sap-input" value="Adj-May2026">
-                        </div>
-                    </div>
-                </div>
-
-                <h4 style="margin: 15px 0 10px; color: var(--sap-dark-blue);">مثال واقعي لقيد تسوية مصروفات (Accounting Entry):</h4>
-                <div class="entry-box">
-                    <div class="entry-row header">
-                        <span>الحساب (G/L Account)</span>
-                        <span>الاتجاه (Debit/Credit)</span>
-                        <span>المبلغ (Amount)</span>
-                        <span>مركز التكلفة (Cost Center)</span>
-                    </div>
-                    <div class="entry-row">
-                        <span>حـ/ مصروفات صيانة عامة (G/L 400120)</span>
-                        <span>مدين (Debit)</span>
-                        <span>15,000</span>
-                        <span>CC_ADMIN</span>
-                    </div>
-                    <div class="entry-row">
-                        <span>حـ/ النقدية بالبنك (G/L 110010)</span>
-                        <span>دائن (Credit)</span>
-                        <span>15,000</span>
-                        <span>-</span>
-                    </div>
-                </div>
-
-                <div class="info-block block-tip">
-                    <i class="fa fa-lightbulb"></i>
-                    <div>
-                        <strong>ميزة ذكية في ساب:</strong> نظام SAP لن يسمح بترحيل القيد (Post) أبداً إلا إذا كانت إشارة لمبة التوازن في أعلى الشاشة باللون <strong>الأخضر</strong>، مما يعني أن مجموع الجانب المدين يساوي تماماً مجموع الجانب الدائن Balance = 0.
-                    </div>
-                </div>
-
-                <div class="info-block block-error">
-                    <i class="fa fa-exclamation-triangle"></i>
-                    <div>
-                        <strong>خطأ شائع:</strong> <code>G/L account XXXXXX requires an assignment to a CO object</code><br>
-                        <strong>الحل:</strong> حساب المصروفات المختار مرتبط بحسابات التكاليف، لذا يجب إدخال مركز تكلفة (Cost Center) أو أمر داخلي (Internal Order) في سطر الحساب لتمرير القيد بنجاح.
-                    </div>
-                </div>
-                <button class="btn-ctrl" style="margin-top: 15px; background-color: var(--sap-blue); color: white;" onclick="markAsCompleted('fb50')">اعلم كـ مقروء ومكتمل ✓</button>
+        <!-- QUICK DASHBOARD CARDS -->
+        <div class="dashboard-grid">
+            <div class="dashboard-card" style="border-top-color: var(--sap-blue);">
+                <h3>FB50</h3>
+                <p>إدخال قيود الأستاذ العام المباشرة بشاشة واحدة مبسطة Enjoy Transaction.</p>
+            </div>
+            <div class="dashboard-card" style="border-top-color: var(--sap-warning);">
+                <h3>FB03</h3>
+                <p>استعراض القيود المرحلة وتتبع الحركات المالية ومراكز التكلفة المحملة.</p>
+            </div>
+            <div class="dashboard-card" style="border-top-color: var(--sap-error);">
+                <h3>FB08</h3>
+                <p>إلغاء وعكس القيود الخاطئة فردياً مع تحديد سبب الإلغاء بدقة نظامية.</p>
+            </div>
+            <div class="dashboard-card" style="border-top-color: var(--sap-success);">
+                <h3>FV50</h3>
+                <p>حفظ القيود مؤقتاً (Park Document) لغرض المراجعة والاعتماد الداخلي.</p>
             </div>
         </div>
+
+        <!-- INTRODUCTION SECTION -->
+        <section id="intro">
+            <h2 class="section-title">مقدمة عامة وهندسة العمليات المالية المالية</h2>
+            <p><strong>ما هو كود FB50 (G/L Account Posting)؟</strong></p>
+            <p>كود المعاملة <strong>FB50</strong> هو واجهة إدخال متطورة تنتمي إلى حزمة معاملات الـ <em>Enjoy Transactions</em> في نظام SAP. تم تصميمه ليتيح للمحاسب المالي إمكانية تسجيل وتمرير قيود اليومية العامة (Journal Entries) في شاشة واحدة متكاملة دون الحاجة للتنقل بين شاشات متعددة لإدخال الطرف المدين والدائن كما هو الحال في الطراز القديم للنظام.</p>
+            
+            <p><strong>الاستخدامات الرئيسية:</strong></p>
+            <ul>
+                <li>تسجيل التسويات المالية الشهرية والسنوية (Adjusting Entries).</li>
+                <li>إثبات المصروفات المباشرة غير المتعلقة بموردين.</li>
+                <li>عمليات إعادة التصنيف (Reclassification Entries) بين الحسابات.</li>
+                <li>توزيع وتحويل التكاليف بين مراكز التكلفة المختلفة.</li>
+            </ul>
+
+            <div class="sap-note">
+                <div class="sap-note-title">SAP Notes Style: هندسة العمليات المحاسبية بنظام SAP</div>
+                يتم الإدخال في كود FB50 دون تطلب إدخال رموز الترحيل التقليدية يدوياً (Posting Keys مثل 40 للمدين و50 للدائن)، حيث يترجم النظام خيار الإدخال المباشر (Debit/Credit) تلقائياً خلف الكواليس لتسريع المعالجة وضمان انخفاض معدل الأخطاء البشرية.
+            </div>
+
+            <p><strong>مخطط تدفق عملية معالجة القيد (Workflow Lifecycle):</strong></p>
+            <div class="workflow-flex">
+                <div class="workflow-step">إدخال البيانات <br><small>FB50 / FV50</small></div>
+                <div class="workflow-arrow">←</div>
+                <div class="workflow-step">التحقق من التوازن <br><small>Balance Check = 0</small></div>
+                <div class="workflow-arrow">←</div>
+                <div class="workflow-step">الترحيل الفعلي <br><small>Document Post</small></div>
+                <div class="workflow-arrow">←</div>
+                <div class="workflow-step">إنتاج الرقم الموحد <br><small>FB03 Generated</small></div>
+            </div>
+        </section>
+
+        <!-- SECTION 1: ENTERING AND SCREENS -->
+        <section id="screens">
+            <h2 class="section-title">1. الدخول على FB50 وتفاصيل شاشة العرض الرئيسية</h2>
+            <p>يتم الوصول إلى الشاشة عن طريق كتابة الرمز <code>FB50</code> في شريط الأوامر المباشر (Command Field) أو عبر المسار المحاسبي في شجرة القوائم التابعة لـ SAP:</p>
+            <p><code>Accounting → Financial Accounting → General Ledger → Document Entry → FB50 - Enter G/L Account Document</code></p>
+            
+            <h3>مكونات الهيكل الأساسي للشاشة (Screen Architecture)</h3>
+            <p>تنقسم شاشة المعاملة الموحدة FB50 إلى ثلاثة أجزاء جوهرية متكاملة ديناميكياً:</p>
+            
+            <!-- SAP GUI MOCKUP SCREEN -->
+            <div class="sap-gui-mockup">
+                <div class="sap-gui-header">
+                    <span>Tree On/Off | Company Code: 1000 | Hold | Park | Simulate | Post</span>
+                    <span>SAP GUI - Enter G/L Account Document</span>
+                </div>
+                <div class="sap-gui-toolbar">
+                    <button class="sap-gui-btn">Tree on</button>
+                    <button class="sap-gui-btn">Company Code</button>
+                    <button class="sap-gui-btn">Simulate</button>
+                    <button class="sap-gui-btn" style="background-color: #2b7d2b; color: white;">Post (F11)</button>
+                </div>
+                <div class="sap-gui-content">
+                    <!-- HEADER DATA MOCKUP -->
+                    <div class="sap-gui-form-group">
+                        <h4>Header Data (بيانات رأس المستند - تطبق على القيد كاملاً)</h4>
+                        <div class="sap-grid-2">
+                            <div>
+                                <div class="sap-field"><label>Doc. Date:</label><input type="text" value="21.05.2026" required></div>
+                                <div class="sap-field"><label>Posting Date:</label><input type="text" value="21.05.2026" required></div>
+                                <div class="sap-field"><label>Doc. Number:</label><input type="text" placeholder="Internal Number Assignment" disabled></div>
+                            </div>
+                            <div>
+                                <div class="sap-field"><label>Company Code:</label><input type="text" value="1000" required></div>
+                                <div class="sap-field"><label>Currency/Rate:</label><input type="text" value="SAR"></div>
+                                <div class="sap-field"><label>Reference:</label><input type="text" placeholder="رقم الفاتورة أو المرجع"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- LINE ITEMS MOCKUP -->
+                    <div class="sap-gui-form-group">
+                        <h4>Line Items (بيانات البنود والخطوط التفصيلية)</h4>
+                        <div class="sap-gui-table-wrapper">
+                            <table class="sap-gui-table">
+                               <thead>
+                                   <tr>
+                                       <th>G/L Account</th>
+                                       <th>D/C</th>
+                                       <th>Amount in Doc. Curr.</th>
+                                       <th>Cost Center</th>
+                                       <th>Profit Center</th>
+                                       <th>Text</th>
+                                   </tr>
+                               </thead>
+                               <tbody>
+                                   <tr>
+                                       <td><input type="text" value="400010 (Electricity Expense)"></td>
+                                       <td><input type="text" value="Debit"></td>
+                                       <td><input type="text" value="5,000.00"></td>
+                                       <td><input type="text" value="CC_ADMIN"></td>
+                                       <td><input type="text" value="PC_HQ" disabled></td>
+                                       <td><input type="text" value="Electricity May 2026"></td>
+                                   </tr>
+                                   <tr>
+                                       <td><input type="text" value="210300 (Accrued Liabilities)"></td>
+                                       <td><input type="text" value="Credit"></td>
+                                       <td><input type="text" value="5,000.00"></td>
+                                       <td><input type="text" value=""></td>
+                                       <td><input type="text" value="PC_HQ" disabled></td>
+                                       <td><input type="text" value="Electricity May 2026"></td>
+                                   </tr>
+                               </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: FIELDS GUIDE -->
+        <section id="fields">
+            <h2 class="section-title">2. دليل الحقول الأساسية وتفصيل معايير الإدخال الفني</h2>
+            <p>يحتوي الجدول التالي على تشريح كامل لكافة الحقول الجوهرية الحرجة اللازمة لنجاح ترحيل القيود عبر كود FB50:</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>اسم الحقل الفني</th>
+                        <th>الغرض الوظيفي والمحاسبي (Purpose)</th>
+                        <th>أمثلة واقعية (Example)</th>
+                        <th>ملاحظات هامة وأخطاء شائعة (Common Mistakes)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Document Date</strong></td>
+                        <td>تاريخ إصدار المستند الفعلي أو الفاتورة التاريخية من المصدر الخارجي.</td>
+                        <td>15.05.2026</td>
+                        <td>لا يؤثر على الفترات المالية المحاسبية المغلقة ولكنه هام لأغراض المراجعة والتدقيق.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Posting Date</strong></td>
+                        <td>التاريخ الذي يتم بناءً عليه التأثير في دفاتر الأستاذ العام وتحديد الفترة المالية.</td>
+                        <td>21.05.2026</td>
+                        <td>خطأ شائع: إدخال تاريخ يقع ضمن فترة محاسبية مغلقة (Posting Period Closed) مما يسبب توقف النظام تماماً عن الترحيل.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Company Code</strong></td>
+                        <td>المعرف القانوني والكيان المالي المستقل الذي يتم إصدار القوائم المالية باسمه.</td>
+                        <td>1000 (Saudi Corp)</td>
+                        <td>يجب التأكد من اختيار الكود الصحيح عند بدء المعاملة لأن الحسابات ترتبط مباشرة به تسمى كود الشركة.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>G/L Account</strong></td>
+                        <td>رقم الحساب المعين في شجرة الحسابات المعتمدة (Chart of Accounts).</td>
+                        <td>400010 (مصروفات)</td>
+                        <td>تأكد أن نوع الحساب متوافق مع الحقول الإلزامية مثل متطلبات مراكز التكلفة للحسابات التشغيلية.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Debit / Credit</strong></td>
+                        <td>تحديد طبيعة حركة السطر (مدين أو دائن) لتشكيل التوازن المحاسبي.</td>
+                        <td>Debit / Credit</td>
+                        <td>يجب أن تتساوى قيمة إجمالي الحركات المدينة مع الدائنة لكي تظهر إشارة التوازن باللون الأخضر.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cost Center</strong></td>
+                        <td>مركز التكلفة المسؤول عن تحمل عبء المصروف لأغراض محاسبة التكاليف والمراقبة الداخيلة CO.</td>
+                        <td>CC_MKT_01</td>
+                        <td>حقل إلزامي لكافة حسابات الربح والخسارة (P&L Accounts) ولا يمكن إغفاله أبداً.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- SECTION 3: REAL SCENARIO -->
+        <section id="scenario">
+            <h2 class="section-title">3. سيناريو محاسبي كامل: إثبات وتسوية المصروفات المستحقة</h2>
+            <p><strong>السيناريو العملي:</strong> استلمت الإدارة المالية في نهاية شهر مايو 2026 مطالبة استهلاك كهرباء غير مدفوعة للمبنى الإداري الرئيسي بمبلغ <strong>12,000 ريال سعودي</strong>، ويتطلب إثبات المصروف لتطبيق مبدأ الاستحقاق (Accrual Concept) وتحميله على الفترة المالية الصحيحة.</p>
+            
+            <div class="tabs-container">
+                <div class="tabs-headers">
+                    <button class="tab-button active" onclick="openTab(event, 'accounting-view')">الأثر المحاسبي والقيود</button>
+                    <button class="tab-button" onclick="openTab(event, 'sap-steps')">خطوات التنفيذ داخل النظام</button>
+                </div>
+                
+                <div id="accounting-view" class="tab-content active">
+                    <h4>القيد المحاسبي المزدوج المتولد:</h4>
+                    <p>من حـ/ مصروفات الكهرباء (G/L: 400010) - بقيمة 12,000 ريال سعودي <span class="badge-success">مدين Debit</span><br>
+                    إلى حـ/ مصاريف مستحقة غير مدفوعة (G/L: 210300) - بقيمة 12,000 ريال سعودي <span class="badge-error">دائن Credit</span></p>
+                    
+                    <h4>الأثر على الحسابات (Accounting Impact Chart):</h4>
+                    <ul>
+                        <li><strong>قائمة الدخل:</strong> زيادة المصروفات العمومية والإدارية وبالتالي تخفيض صافي أرباح الفترة الدورية بشكل دقيق وفقاً لمبدأ الاستحقاق المحاسبي.</li>
+                        <li><strong>الميزانية العمومية:</strong> زيادة بند الالتزامات المتداولة تحت الخصوم الأخرى حتى يتم السداد الفعلي للشركة المزودة للمرفق.</li>
+                        <li><strong>التحكم الداخلي (CO):</strong> يظهر الأثر فورياً في تقارير مركز التكلفة المربوط (Cost Center Report: KSB1).</li>
+                    </ul>
+                </div>
+                
+                <div id="sap-steps" class="tab-content">
+                    <h4>تسلسل التمرير النظامي في نموذج FB50:</h4>
+                    <ol style="margin-right: 25px; line-height: 2;">
+                        <li>افتح كود المعاملة <code>FB50</code>.</li>
+                        <li>أدخل تاريخ المستند وتاريخ الترحيل في ترويسة الصفحة (Header Data).</li>
+                        <li>في البند الأول للسطر: اختر حساب المصروف <code>400010</code>، حدد الخيار <code>Debit</code>، واكتب القيمة <code>12000</code>، ثم عين مركز التكلفة الإداري <code>CC_ADMIN_HQ</code>.</li>
+                        <li>في البند الثاني للسطر: اختر حساب الالتزام المستحق <code>210300</code>، حدد الخيار <code>Credit</code>، واكتب القيمة <code>12000</code>.</li>
+                        <li>اضغط على مفتاح <strong>Enter</strong> ليقوم النظام بمراجعة صحة الحسابات ومراكز التكلفة المدخلة.</li>
+                        <li>تحقق من تحول أيقونة دائرة حالة الرصيد الأعلى يميناً إلى اللون الأخضر المضيء دلالة على تحقيق التوازن الصفري.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: USER ACTION SIMULATION -->
+        <section id="simulation">
+            <h2 class="section-title">4. محاكاة آلية معالجة المدخلات الفعلية واستجابة النظام</h2>
+            <p>توضح المحاكاة أدناه النموذج المتغير للمؤشرات الضوئية والأزرار داخل بيئة عمل SAP الحية بناءً على المدخلات المباشرة للمحاسب المالي:</p>
+            
+            <div class="sap-gui-mockup" style="background-color: #f9f9f9;">
+                <div class="sap-gui-header" style="background-color: #1a365d;">
+                    <span>الحالة النظامية الحالية: <span id="sap-status-light" style="color: #ff9900; font-weight: bold;">● القيد غير متوازن</span></span>
+                    <span>محاكاة الأنظمة التفاعلية - SAP Simulator GUI</span>
+                </div>
+                <div style="padding: 20px;">
+                    <div class="sap-grid-2">
+                        <div style="border: 1px solid #ccc; padding: 15px; background: #fff;">
+                            <h5>حساب الطرف المدين (Debit)</h5>
+                            <hr style="margin: 10px 0; border-style: dashed;">
+                            <p>المبلغ المدخل: <strong>15,000 ريال</strong></p>
+                            <p>حساب الأستاذ العام: <code>400020 - Rent Expense</code></p>
+                        </div>
+                        <div style="border: 1px solid #ccc; padding: 15px; background: #fff;">
+                            <h5>حساب الطرف الدائن (Credit)</h5>
+                            <hr style="margin: 10px 0; border-style: dashed;">
+                            <label>أدخل مبلغ الدائن لإيقاظ وتوازن النظام:</label>
+                            <input type="number" id="creditAmountInput" oninput="simulateSapBalance()" placeholder="0.00" style="width: 100%; padding: 8px; margin-top: 10px; border: 2px solid var(--sap-blue);">
+                        </div>
+                    </div>
+                    
+                    <div id="sim-result-box" class="warning-box" style="margin-top: 20px; display: block;">
+                        <strong>حالة الرصيد الفعلي حالياً:</strong> الرصيد لا يساوي صفر المخرجات المسموح بها للترحيل. زر الترحيل <button class="sap-gui-btn" disabled>Post</button> معطل حمايةً للنظام.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: COMMON ERRORS -->
+        <section id="errors">
+            <h2 class="section-title">5. دليل الأخطاء الشائعة، تشخيص الأسباب وطرق الحل النظامية</h2>
+            <p>انقر على عنوان الخطأ الظاهر أدناه لاستعراض السبب الفني العميق له من واقع النظام والخطوات العملية لمعالجته فورا:</p>
+            
+            <!-- ACCORDION 1 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>❌ Error: Balance is not equal to zero (الأرصدة غير متوازنة في العملة المحددة)</span>
+                    <span>▼</span>
+                </div>
+                <div class="accordion-content">
+                    <p><strong>سبب المشكلة المباشر:</strong> القيمة الإجمالية للبنود المدرجة في العمود المدين لا تتوافق مع القيمة الإجمالية للبنود المدرجة في العمود الدائن، أو وجود فوارق تقريب في فئات الكسور العشري.</p>
+                    <p><strong>طريقة الحل الفنية:</strong> راجع عمود المبالغ بدقة، وتأكد من أن المؤشر العلوي يقع في النطاق الأخضر الصافي. إذا كان الفارق ناتجاً عن فروق تحويل عملات أجنبية، يجب تعديل أسطر تقريب العملات الأجنبية التلقائية.</p>
+                </div>
+            </div>
+
+            <!-- ACCORDION 2 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>❌ Error: Account XXXXXX requires an assignment to a CO object (مفقود كائن حسابات التكاليف المساعد)</span>
+                    <span>▼</span>
+                </div>
+                <div class="accordion-content">
+                    <p><strong>سبب المشكلة المباشر:</strong> تم تعريف حساب الأستاذ العام المستهدف في النظام كعنصر تكلفة أولي (Primary Cost Element)، مما يجعل الحقل الخاص بمركز التكلفة (Cost Center) أو أمر العمل الداخلي (Internal Order) إلزامياً قانونياً لاستيعاب خط سير النفقة.</p>
+                    <p><strong>طريقة الحل الفنية:</strong> مرر الشاشة الجانبية لليمين داخل أسطر القيود وعين الكود الصحيح لمركز التكلفة المعتمد التابع لقسمك في حقل <code>Cost Center</code> ثم اضغط Enter لتحديث المستند.</p>
+                </div>
+            </div>
+
+            <!-- ACCORDION 3 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>❌ Error: Posting period XXX is not open (الفترة المالية المحاسبية الحالية مغلقة تماما)</span>
+                    <span>▼</span>
+                </div>
+                <div class="accordion-content">
+                    <p><strong>سبب المشكلة المباشر:</strong> تاريخ الترحيل (Posting Date) المختار يقع ضمن فترة محاسبية تم إقفالها نهائياً من قِبل إدارة الرقابة المالية المركزية ولا تسمح باستقبال حركات مالية إضافية.</p>
+                    <p><strong>طريقة الحل الفنية:</strong> إما تعديل تاريخ الترحيل ليتناسب مع الفترة المفتوحة الحالية، أو مراجعة مسؤول النظام لفتح الفترة المالية استثنائياً عبر كود المعاملة المخصص لذلك وهو <code>OB52</code>.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: POST VIEW -->
+        <section id="post-view">
+            <h2 class="section-title">6. عرض المستندات المحاسبية وتتبعها بعد الترحيل الفعلي</h2>
+            <p>عند نقر زر <strong>Post</strong> في قيود FB50 ويتم قبول البيانات، تظهر في الأسفل رسالة الحالة بنجاح مشيرة إلى تكوين رقم مستند فريد مخصص وثابت:</p>
+            <p dir="ltr" style="text-align: center; font-family: monospace; background: #eef; padding: 10px; border-radius: 4px;"><strong>"Document 100004321 was posted in company code 1000"</strong></p>
+            
+            <h3>استعراض تفاصيل المستند (Display Document) عبر المعاملة الموحدة FB03:</h3>
+            <p>لتتبع القيود ومراجعة الأرصدة المتولدة، يتم استخدام رمز المعاملة <code>FB03</code>، حيث تتيح الواجهة للمستخدم ما يلي:</p>
+            <ul>
+                <li>رؤية ترويسة القيد والتحقق من المستخدم الفعلي الذي قام بالادخال والوقت (System Audit Trail).</li>
+                <li>تغيير حقول النصوص البسيطة والمراجع الفرعية التي لا تؤثر على نزاهة القيم والأرقام الأساسية لـ الحسابات.</li>
+                <li>الانتقال المباشر لاستعراض القيود بصيغة الأستاذ العام المتقدم (General Ledger View).</li>
+            </ul>
+            
+            <div class="warning-box">
+                <strong>تحذير صارم للرقابة المحاسبية:</strong> لا يتيح نظام SAP مطلقاً تعديل المبالغ، كود الشركة، الحسابات المالية، أو مراكز التكلفة بعد ترحيل المستند وإصدار رقمه الموحد لضمان النزاهة التامة للبيانات وعدم إمكانية التلاعب بالدفاتر الرسمية. السبيل الوحيد للتصحيح هو عكس وتصفية المستند بالكامل.
+            </div>
+        </section>
+
+        <!-- SECTION 7: REVERSING DOCUMENT -->
+        <section id="reverse">
+            <h2 class="section-title">7. إدارة عمليات عكس القيود اليومية وتصحيح انحراف البيانات المالية</h2>
+            <p>عند اكتشاف خطأ محاسبي جوهري في مستند تم ترحيله مسبقاً، يتعين على المحاسب المختص المباشرة بإلغائه وعكس أثره المالي تماماً عبر المعاملات القياسية التالية:</p>
+            
+            <ul>
+                <li><strong>كود المعاملة FB08 (Individual Reversal):</strong> تستخدم لإلغاء وعكس مستند مالي واحد محدد بشكل فردي ودقيق.</li>
+                <li><strong>كود المعاملة F.80 (Mass Reversal):</strong> تستخدم لعكس وإلغاء مجموعة هائلة من مستندات القيود اليومية دفعة واحدة تبعا لمعايير مشتركة لتوفير الوقت والجهد في الإقفالات الكبيرة.</li>
+            </ul>
+
+            <h3 style="margin-top:20px; margin-bottom:10px;">الفرق الفني الحاسم بين مفهومي الـ Reset والـ Reverse:</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>الخاصية الفنية والمحاسبية</th>
+                        <th>مفهوم العكس الكامل المحاسبي (Reverse)</th>
+                        <th>مفهوم إعادة التعيين والفك الفني (Reset / Clear)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>الهدف الأساسي للعملية</strong></td>
+                        <td>إنشاء قيد عكسي تلقائي مكافئ لمستند أصلي لإلغاء أثره المالي والافتري في الدفاتر بشكل كامل.</td>
+                        <td>إلغاء وضعية "المطابقة والسداد" (Cleared Items Status) وإرجاع البند لحالته الأصلية كبند مفتوح قابل للمعالجة.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>الأكواد النظامية المستخدمة</strong></td>
+                        <td><code>FB08</code> للقيود المنفردة، و <code>F.80</code> للعمليات الجماعية الكبيرة.</td>
+                        <td><code>FBRA</code> لإعادة تعيين بنود المقاصة وفك الارتباط المباشر لعمليات السداد والتسويات.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- SECTION 8: EXPERT CASES -->
+        <section id="expert-cases">
+            <h2 class="section-title">8. نماذج وحالات محاسبية متقدمة من بيئات العمل الفعلية</h2>
+            <p>تستعرض الأمثلة الهيكلية التالية كيفية توزيع الأرصدة والقيود المحاسبية للمصروفات والعمليات العابرة في الأنظمة الكبيرة:</p>
+            
+            <div class="sap-note">
+                <div class="sap-note-title">حالة متقدمة رقم 1: إدخال قيد بالعملة الأجنبية (Foreign Currency Post)</div>
+                عند تسجيل فاتورة استشارية مقومة بالدولار الأمريكي (USD) لشركة تستخدم الريال كعملة محلية، يتم كتابة العملة <code>USD</code> في ترويسة الحقل الرئيسي لـ FB50. يقوم النظام أوتوماتيكياً بجلب سعر الصرف المعتمد والمحدث تاريخياً من جدول العملات المركزي <code>OB08</code> لإنشاء القيد وحساب الفروقات المتوقعة بدقة بالغة.
+            </div>
+
+            <div class="sap-note" style="background-color: #f6fff6; border-right-color: #2b7d2b;">
+                <div class="sap-note-title">حالة متقدمة رقم 2: قيد التوزيع المشترك بين الشركات التابعة (Intercompany Post)</div>
+                في الحالات التي تقوم فيها الشركة القابضة بدفع مصاريف مشتركة نيابة عن فروع مستقلة، يتيح كود FB50 توزيع الأسطر إلى أكواد شركات مختلفة (Cross-Company Code Postings). يقوم محرك SAP تلقائياً بتوليد خطوط حسابات جارية وسيطة ومقاصة لضمان توازن ميزانية كل شركة تابعة على حدة وبشكل آلي تماماً.
+            </div>
+        </section>
+
+        <!-- SECTION 9: BEST PRACTICES -->
+        <section id="best-practices">
+            <h2 class="section-title">9. الممارسات القياسية المثلى وآليات الرقابة والتحكم الداخلي</h2>
+            <p>للحفاظ على جودة ونقاء البيانات المحاسبية داخل الأنظمة وتجنب المشاكل أثناء التدقيق، يجب الالتزام الصارم بالقواعد الفنية التالية لمدخلي البيانات:</p>
+            
+            <ul>
+                <li><strong>توحيد منهجية التسمية في حقل النصوص (Text Field):</strong> احرص دائماً على صياغة الشرح بهيكل واضح ومفهوم يسهل قراءته بالتقارير اللاحقة، مثال: <code>[اسم المرفق] - [الشهر/السنة] - [رقم العقد الفرعي]</code>، وتجنب استخدام العبارات العامة والغامضة مثل "قيد تسوية" دون تفاصيل مرافقة.</li>
+                <li><strong>الاستخدام الفعال لحقل التخصيص (Assignment Field):</strong> يعتبر هذا الحقل بمثابة المفتاح السحري في عمليات المطابقة التلقائية (Automatic Clearing). ترحيل أرقام العقود أو أرقام الهواتف الموحدة في هذا الحقل يسهل من فرز وتصفية الحسابات بشكل آلي وسريع لاحقاً.</li>
+                <li><strong>تفعيل الرقابة الثنائية عبر استخدام الحفظ المؤقت (Park Document):</strong> كجزء أساسي من الفصل بين الواجبات والتحكم الداخلي (Internal Audit Control)، ينصح المحاسبين الجدد بحفظ القيود الضخمة أو غير المؤكدة عبر زر <code>Park / FV50</code>. يتيح ذلك للمشرف المالي الأعلى مراجعة القيد وتدقيقه واعتماده تمهيداً لترحيله الفعلي النهائي للدفاتر.</li>
+            </ul>
+        </section>
+
+        <!-- SECTION 10: COMPARISON TABLE -->
+        <section id="comparison">
+            <h2 class="section-title">10. جدول المقارنة الفنية الشاملة بين رموز المعاملات المالية</h2>
+            <p>يوضح الجدول الفني المقارن أدناه الفروقات الجوهرية والسيناريوهات التطبيقية المثلى لكل معاملة إدخال مالي داخل النظام الأساسي لـ SAP:</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>رمز المعاملة (T-Code)</th>
+                        <th>طبيعة الواجهة والمظهر (UI Style)</th>
+                        <th>مستوى السرعة وتجربة المستخدم</th>
+                        <th>السيناريو التطبيقي الأمثل للاستخدام في العمل</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="badge-success" style="font-size:0.9rem;">FB50</span></td>
+                        <td>شاشة موحدة ذكية (Enjoy Transaction) تجمع الرأس والأسطر معاً.</td>
+                        <td>سريعة جداً وتفاعلية لعدم تطلب حفظPosting Keys التقليدية.</td>
+                        <td>تسجيل وتسوية قيود الأستاذ العام المباشرة واليومية العامة الروتينية.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>F-02</strong></td>
+                        <td>شاشات متتابعة تقليدية قديمة الطراز (Legacy SAP Screen).</td>
+                        <td>أبطأ نسبياً، وتتطلب التنقل اليدوي المستمر لكل سطر مالي على حدة.</td>
+                        <td>القيود المعقدة للغاية التي تتضمن عملات وحسابات خاصة متعددة المظاهر.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>FB01</strong></td>
+                        <td>معاملة عامة أساسية للنظام (Generic Posting Tool).</td>
+                        <td>تتطلب خبرة عميقة برموز الترحيل والحسابات الفرعية المعقدة.</td>
+                        <td>تستخدم بشكل رئيسي في ترحيل القيود التلقائية عبر الأنظمة والواجهات الخارجية (Interfaces).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>F-65</strong></td>
+                        <td>شاشة مخصصة لحفظ المستندات المبدئية والمسودات (Document Preliminary).</td>
+                        <td>متوسطة السرعة وموجهة نحو الحفظ المؤقت والتعليق فقط.</td>
+                        <td>تسجيل القيود غير المكتملة التي تنتظر الحصول على الموافقات الإدارية المسبقة.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </div>
+
+    <!-- JAVASCRIPT FOR INTERACTIVE LOGIC -->
+    <script>
+        // Interactive Accordions for Common Errors Section
+        function toggleAccordion(header) {
+            const content = header.nextElementSibling;
+            const arrow = header.querySelector('span:last-child');
+            
+            if (content.style.display === "block") {
+                content.style.display = "none";
+                arrow.textContent = "▼";
+                header.style.backgroundColor = "var(--sap-grey-bg)";
+            } else {
+                content.style.display = "block";
+                arrow.textContent = "▲";
+                header.style.backgroundColor = "var(--sap-light-blue)";
+            }
+        }
+
+        // Tabs switcher script for scenarios section
+        function openTab(evt, tabId) {
+            const tabContents = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove("active");
+            }
+
+            const tabButtons = document.getElementsByClassName("tab-button");
+            for (let i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove("active");
+            }
+
+            document.getElementById(tabId).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // Live Search Filter for Sidebar Menu and inner content headers
+        function filterMenu() {
+            const input = document.getElementById("menuSearch");
+            const filter = input.value.toLowerCase();
+            const menu = document.getElementById("navMenu");
+            const li = menu.getElementsByTagName("li");
+
+            for (let i = 0; i < li.length; i++) {
+                const text = li[i].textContent || li[i].innerText;
+                if (text.toLowerCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+        }
+
+        // Active Navigation Highlight on Scrolling
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            let currentSectionId = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 60) {
+                    currentSectionId = section.getAttribute('id');
+                }
+            });
+
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.querySelector('a').getAttribute('href') === `#${currentSectionId}`) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // Real-time SAP GUI Simulator logic
+        function simulateSapBalance() {
+            const creditVal = document.getElementById("creditAmountInput").value;
+            const statusLight = document.getElementById("sap-status-light");
+            const resultBox = document.getElementById("sim-result-box");
+
+            if(parseFloat(creditVal) === 15000) {
+                statusLight.textContent = "● القيد متوازن ومستقر (Balance = 0)";
+                statusLight.style.color = "#2b7d2b";
+                resultBox.className = "sap-note";
+                resultBox.style.backgroundColor = "#eefcee";
+                resultBox.style.borderRightColor = "#2b7d2b";
+                resultBox.innerHTML = `<strong>تهانينا، رصيد القيد متوازن تماماً!</strong> تم تفعيل محرك النظام. يمكنك الآن النقر بأمان على زر الترحيل الأخضر <button class="sap-gui-btn" style="background-color: #2b7d2b; color: white; border-color:#2b7d2b;">Post</button> لإصدار رقم المستند في تداولات الأستاذ العام المعتمدة.`;
+            } else {
+                statusLight.textContent = "● القيد غير متوازن";
+                statusLight.style.color = "#ff9900";
+                resultBox.className = "warning-box";
+                resultBox.style.backgroundColor = "#fff3e6";
+                resultBox.style.borderRightColor = "var(--sap-warning)";
+                resultBox.innerHTML = `<strong>حالة الرصيد الفعلي حالياً:</strong> الرصيد لا يساوي صفر المخرجات المسموح بها للترحيل. زر الترحيل <button class="sap-gui-btn" disabled>Post</button> معطل حمايةً للنظام.`;
+            }
+        }
+    </script>
+</body>
+</html>
